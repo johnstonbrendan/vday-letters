@@ -23,6 +23,16 @@ READY    →  message pending, waiting for motion
 OCCUPIED →  someone entered, message played, waiting for room to empty
 ```
 
+## Gitignored Files (Create Locally)
+
+The following files contain secrets and are **not included in the repo**. You'll need to create them yourself:
+
+| File | Purpose |
+|------|---------|
+| `web-app/.env` | Supabase URL and anon key for the web app (see `web-app/.env.example`) |
+| `pi/hosts.json` | Pi hostnames, Supabase URL + anon key, cooldown settings |
+| `setup.md` | Full Pi setup guide with credentials and deployment URL |
+
 ## Setup
 
 ### Web App
