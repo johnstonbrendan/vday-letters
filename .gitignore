@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build output
+web-app/dist/
+
+# Environment files (contain secrets)
+.env
+web-app/.env
+
+# Config files with secrets (create locally, see below)
+# - pi/hosts.json: Pi hostnames, Supabase URL + anon key, cooldown settings
+# - setup.md: Full Pi setup guide with Supabase credentials and deployment URL
+pi/hosts.json
+setup.md
+
+# Archives (downloaded audio files)
+archive/
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+
+# Sensor data (local CSV logs)
+*.csv

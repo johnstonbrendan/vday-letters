@@ -1,0 +1,14 @@
+[Unit]
+Description=Valentine's Day Voice Player
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/voice-player.env
+ExecStart=/home/brendan/.local/bin/uv run --with adafruit-circuitpython-sths34pf80,requests /opt/voice-player/voice_player.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

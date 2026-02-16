@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voice Letters — Reel Frames</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    padding: 40px 20px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .label {
+    color: #888;
+    font-size: 14px;
+    font-family: 'Inter', monospace;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: -20px;
+  }
+
+  .frame {
+    width: 1080px;
+    height: 1920px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    transform: scale(0.4);
+    transform-origin: top center;
+    margin-bottom: -1120px;
+  }
+
+  /* ===========================
+     ANIMATIONS
+     =========================== */
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.25; }
+    50% { transform: scale(1.08); opacity: 0.1; }
+    100% { transform: scale(1); opacity: 0.25; }
+  }
+
+  @keyframes pulse-ring-lg {
+    0% { transform: scale(1); opacity: 0.15; }
+    50% { transform: scale(1.06); opacity: 0.05; }
+    100% { transform: scale(1); opacity: 0.15; }
+  }
+
+  @keyframes mic-glow {
+    0%, 100% { box-shadow: 0 20px 60px rgba(225, 29, 72, 0.4); }
+    50% { box-shadow: 0 20px 80px rgba(225, 29, 72, 0.65); }
+  }
+
+  @keyframes bar-bounce {
+    0%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(0.4); }
+  }
+
+  @keyframes flow-down {
+    0% { transform: translateY(-30px); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(30px); opacity: 0; }
+  }
+
+  @keyframes ir-ping {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.35; }
+    100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
+  }
+
+  @keyframes sound-pulse {
+    0%, 100% { transform: scaleX(1); opacity: 0.4; }
+    50% { transform: scaleX(1.5); opacity: 0.7; }
+  }
+
+  @keyframes fade-in-up {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes check-pop {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes gentle-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes dash-flow {
+    to { stroke-dashoffset: -20; }
+  }
+
+  @keyframes heart-float {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+    50% { transform: translateY(-15px) scale(1.1); opacity: 0.5; }
+  }
+
+  @keyframes envelope-drop {
+    0% { transform: translateY(-40px); opacity: 0; }
+    60% { transform: translateY(8px); opacity: 1; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes walk-in {
+    0% { transform: translateX(-60px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+
+  /* ===========================
+     FRAME 1: TITLE
+     =========================== */
+  .frame-1 {
+    background: linear-gradient(165deg, #FFF5F5 0%, #FFE4E8 40%, #FFC8D6 100%);
+  }
+
+  .frame-1 .hearts-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    font-size: 80px;
+    line-height: 1.2;
+    word-break: break-all;
+    padding: 20px;
+    color: #BE123C;
+  }
+
+  .frame-1 .content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px;
+  }
+
+  .frame-1 .icon-cluster {
+    font-size: 120px;
+    margin-bottom: 60px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .frame-1 .title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 108px;
+    color: #9F1239;
+    text-align: center;
+    line-height: 1.15;
+    margin-bottom: 40px;
+    animation: fade-in-up 1s ease-out;
+  }
+
+  .frame-1 .subtitle {
+    font-size: 36px;
+    color: #BE123C;
+    opacity: 0.6;
+    text-align: center;
+    line-height: 1.5;
+    max-width: 700px;
+    animation: fade-in-up 1s ease-out 0.3s both;
+  }
+
+  .frame-1 .tech-badge {
+    position: absolute;
+    bottom: 120px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    animation: fade-in-up 1s ease-out 0.6s both;
+  }
+
+  .frame-1 .tech-badge span {
+    background: rgba(159, 18, 57, 0.08);
+    color: #9F1239;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  /* ===========================
+     FRAME 2: PICK A ROOM
+     =========================== */
+  .frame-2 {
+    background: linear-gradient(165deg, #FFF5F5 0%, #FFE4E8 100%);
+  }
+
+  .frame-2 .step-num {
+    position: absolute;
+    top: 100px;
+    left: 80px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 200px;
+    color: #9F1239;
+    opacity: 0.08;
+  }
+
+  .frame-2 .step-label {
+    position: absolute;
+    top: 120px;
+    left: 80px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #BE123C;
+    opacity: 0.5;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .frame-2 .phone-mockup {
+    position: absolute;
+    top: 340px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 560px;
+    height: 1000px;
+    background: #fff;
+    border-radius: 60px;
+    box-shadow: 0 40px 120px rgba(159, 18, 57, 0.15), 0 0 0 8px #1a1a1a;
+    padding: 70px 30px 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .phone-mockup .notch {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 36px;
+    background: #1a1a1a;
+    border-radius: 20px;
+  }
+
+  .phone-mockup .app-header {
+    text-align: center;
+    padding: 20px 0 16px;
+  }
+
+  .phone-mockup .app-header h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: #9F1239;
+  }
+
+  .phone-mockup .app-header p {
+    font-size: 16px;
+    color: #BE123C;
+    opacity: 0.5;
+    margin-top: 4px;
+  }
+
+  .phone-mockup .floor-plan {
+    flex: 1;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1.2fr 0.8fr 1.2fr;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .phone-mockup .room {
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 18px;
+    border: 2px solid rgba(255,255,255,0.6);
+    transition: all 0.3s;
+  }
+
+  .room-bedroom { background: #E8DEF8; color: #5B21B6; grid-area: 1/1/3/2; }
+  .room-office { background: #DBEAFE; color: #1E40AF; grid-area: 1/2/2/3; }
+  .room-bathroom { background: #D1FAE5; color: #065F46; grid-area: 2/2/3/3; }
+  .room-living {
+    background: #FFEDD5; color: #9A3412; grid-area: 1/3/3/4;
+    border: 3px solid #FB923C;
+    box-shadow: 0 0 30px rgba(251, 146, 60, 0.3);
+  }
+
+  .room .room-icon { font-size: 28px; }
+
+  /* Tap indicator */
+  .frame-2 .tap-indicator {
+    position: absolute;
+    top: 640px;
+    right: 228px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px solid rgba(251, 146, 60, 0.5);
+    animation: pulse-ring 1.5s ease-in-out infinite;
+  }
+
+  .frame-2 .tap-indicator::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    border: 2px solid rgba(251, 146, 60, 0.3);
+    animation: pulse-ring 1.5s ease-in-out 0.3s infinite;
+  }
+
+  .frame-2 .action-text {
+    position: absolute;
+    bottom: 160px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .frame-2 .action-text h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 72px;
+    color: #9F1239;
+    margin-bottom: 16px;
+  }
+
+  .frame-2 .action-text p {
+    font-size: 32px;
+    color: #BE123C;
+    opacity: 0.5;
+  }
+
+  /* ===========================
+     FRAME 3: RECORD
+     =========================== */
+  .frame-3 {
+    background: linear-gradient(165deg, #FFF5F5 0%, #FFE0E8 100%);
+  }
+
+  .frame-3 .step-num {
+    position: absolute;
+    top: 100px;
+    left: 80px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 200px;
+    color: #9F1239;
+    opacity: 0.08;
+  }
+
+  .frame-3 .step-label {
+    position: absolute;
+    top: 120px;
+    left: 80px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #BE123C;
+    opacity: 0.5;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .frame-3 .mic-area {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .frame-3 .mic-rings {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .frame-3 .mic-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(225, 29, 72, 0.15);
+  }
+
+  .frame-3 .mic-ring:nth-child(1) {
+    width: 400px; height: 400px;
+    animation: pulse-ring-lg 2s ease-in-out infinite;
+  }
+  .frame-3 .mic-ring:nth-child(2) {
+    width: 320px; height: 320px;
+    border-color: rgba(225, 29, 72, 0.2);
+    animation: pulse-ring 2s ease-in-out 0.3s infinite;
+  }
+  .frame-3 .mic-ring:nth-child(3) {
+    width: 240px; height: 240px;
+    border-color: rgba(225, 29, 72, 0.25);
+    animation: pulse-ring 2s ease-in-out 0.6s infinite;
+  }
+
+  .frame-3 .mic-btn {
+    width: 160px;
+    height: 160px;
+    background: linear-gradient(135deg, #E11D48, #BE123C);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 70px;
+    z-index: 1;
+    animation: mic-glow 2s ease-in-out infinite;
+  }
+
+  .frame-3 .waveform {
+    margin-top: 60px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    height: 80px;
+  }
+
+  .frame-3 .waveform .bar {
+    width: 8px;
+    background: #E11D48;
+    border-radius: 4px;
+    opacity: 0.6;
+    animation: bar-bounce 0.8s ease-in-out infinite;
+  }
+
+  .frame-3 .action-text {
+    position: absolute;
+    bottom: 200px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .frame-3 .action-text h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 72px;
+    color: #9F1239;
+    margin-bottom: 16px;
+  }
+
+  .frame-3 .action-text p {
+    font-size: 32px;
+    color: #BE123C;
+    opacity: 0.5;
+  }
+
+  /* ===========================
+     FRAME 4: CLOUD
+     =========================== */
+  .frame-4 {
+    background: linear-gradient(165deg, #EFF6FF 0%, #DBEAFE 50%, #E0E7FF 100%);
+  }
+
+  .frame-4 .step-num {
+    position: absolute;
+    top: 100px;
+    left: 80px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 200px;
+    color: #1E40AF;
+    opacity: 0.08;
+  }
+
+  .frame-4 .step-label {
+    position: absolute;
+    top: 120px;
+    left: 80px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #3B82F6;
+    opacity: 0.5;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .frame-4 .cloud-area {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .frame-4 .envelope {
+    font-size: 100px;
+    animation: envelope-drop 1.5s ease-out infinite;
+  }
+
+  /* Animated dashed path */
+  .frame-4 .flow-path {
+    width: 4px;
+    height: 120px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .frame-4 .flow-path svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .frame-4 .flow-path line {
+    stroke: #3B82F6;
+    stroke-width: 4;
+    stroke-dasharray: 10 10;
+    animation: dash-flow 0.6s linear infinite;
+  }
+
+  .frame-4 .cloud-box {
+    width: 360px;
+    background: white;
+    border-radius: 32px;
+    padding: 50px 40px;
+    box-shadow: 0 20px 60px rgba(59, 130, 246, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .frame-4 .cloud-box .cloud-emoji { font-size: 64px; }
+
+  .frame-4 .cloud-box .cloud-label {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1E40AF;
+    letter-spacing: 1px;
+  }
+
+  .frame-4 .cloud-box .cloud-sub {
+    font-size: 20px;
+    color: #3B82F6;
+    opacity: 0.5;
+  }
+
+  .frame-4 .action-text {
+    position: absolute;
+    bottom: 200px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .frame-4 .action-text h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 72px;
+    color: #1E40AF;
+    margin-bottom: 16px;
+  }
+
+  .frame-4 .action-text p {
+    font-size: 32px;
+    color: #3B82F6;
+    opacity: 0.6;
+  }
+
+  /* ===========================
+     FRAME 5: DETECT
+     =========================== */
+  .frame-5 {
+    background: linear-gradient(165deg, #ECFDF5 0%, #D1FAE5 50%, #A7F3D0 100%);
+  }
+
+  .frame-5 .step-num {
+    position: absolute;
+    top: 100px;
+    left: 80px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 200px;
+    color: #065F46;
+    opacity: 0.08;
+  }
+
+  .frame-5 .step-label {
+    position: absolute;
+    top: 120px;
+    left: 80px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #059669;
+    opacity: 0.5;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .frame-5 .detect-area {
+    position: absolute;
+    top: 44%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+  }
+
+  .frame-5 .scene {
+    position: relative;
+    width: 500px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .frame-5 .person-icon {
+    font-size: 160px;
+    z-index: 2;
+    animation: walk-in 1.5s ease-out both;
+  }
+
+  .frame-5 .ir-ring {
+    position: absolute;
+    border: 2px solid rgba(5, 150, 105, 0.2);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    animation: ir-ping 2.5s ease-out infinite;
+  }
+
+  .frame-5 .ir-ring:nth-child(2) {
+    width: 220px; height: 220px;
+    animation-delay: 0s;
+  }
+  .frame-5 .ir-ring:nth-child(3) {
+    width: 320px; height: 320px;
+    animation-delay: 0.5s;
+  }
+  .frame-5 .ir-ring:nth-child(4) {
+    width: 420px; height: 420px;
+    animation-delay: 1s;
+  }
+
+  .frame-5 .sensor-box {
+    background: white;
+    border-radius: 24px;
+    padding: 30px 50px;
+    box-shadow: 0 10px 40px rgba(5, 150, 105, 0.12);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .frame-5 .sensor-box .chip-icon { font-size: 44px; }
+
+  .frame-5 .sensor-box .sensor-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .frame-5 .sensor-box .sensor-name {
+    font-weight: 700;
+    font-size: 26px;
+    color: #065F46;
+  }
+
+  .frame-5 .sensor-box .sensor-desc {
+    font-size: 20px;
+    color: #059669;
+    opacity: 0.7;
+  }
+
+  .frame-5 .action-text {
+    position: absolute;
+    bottom: 200px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .frame-5 .action-text h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 72px;
+    color: #065F46;
+    margin-bottom: 16px;
+  }
+
+  .frame-5 .action-text p {
+    font-size: 32px;
+    color: #059669;
+    opacity: 0.6;
+  }
+
+  /* ===========================
+     FRAME 6: PLAY
+     =========================== */
+  .frame-6 {
+    background: linear-gradient(165deg, #FFF7ED 0%, #FFEDD5 50%, #FED7AA 100%);
+  }
+
+  .frame-6 .step-num {
+    position: absolute;
+    top: 100px;
+    left: 80px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 200px;
+    color: #9A3412;
+    opacity: 0.08;
+  }
+
+  .frame-6 .step-label {
+    position: absolute;
+    top: 120px;
+    left: 80px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #EA580C;
+    opacity: 0.5;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .frame-6 .play-area {
+    position: absolute;
+    top: 44%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+  }
+
+  .frame-6 .speaker-scene {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .frame-6 .speaker-icon {
+    font-size: 160px;
+    z-index: 1;
+  }
+
+  .frame-6 .sound-arcs {
+    position: absolute;
+    right: -100px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .frame-6 .sound-arc {
+    width: 6px;
+    background: #EA580C;
+    border-radius: 3px;
+  }
+
+  .frame-6 .sound-arc:nth-child(1) {
+    height: 24px; opacity: 0.3;
+    animation: sound-pulse 1s ease-in-out 0s infinite;
+  }
+  .frame-6 .sound-arc:nth-child(2) {
+    height: 44px; opacity: 0.5;
+    animation: sound-pulse 1s ease-in-out 0.15s infinite;
+  }
+  .frame-6 .sound-arc:nth-child(3) {
+    height: 64px; opacity: 0.7;
+    animation: sound-pulse 1s ease-in-out 0.3s infinite;
+  }
+
+  .frame-6 .message-bubble {
+    background: white;
+    border-radius: 30px;
+    padding: 40px 60px;
+    box-shadow: 0 20px 60px rgba(234, 88, 12, 0.12);
+    text-align: center;
+    position: relative;
+    animation: fade-in-up 1s ease-out both;
+  }
+
+  .frame-6 .message-bubble::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 24px solid white;
+  }
+
+  .frame-6 .message-bubble .msg-text {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 36px;
+    color: #9A3412;
+    line-height: 1.5;
+  }
+
+  .frame-6 .action-text {
+    position: absolute;
+    bottom: 200px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .frame-6 .action-text h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 72px;
+    color: #9A3412;
+    margin-bottom: 16px;
+  }
+
+  .frame-6 .action-text p {
+    font-size: 32px;
+    color: #EA580C;
+    opacity: 0.6;
+  }
+
+  /* ===========================
+     FRAME 7: DELIVERED
+     =========================== */
+  .frame-7 {
+    background: linear-gradient(165deg, #FFF5F5 0%, #FFE4E8 40%, #FFC8D6 100%);
+  }
+
+  .frame-7 .content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px;
+    gap: 40px;
+  }
+
+  .frame-7 .check-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 100px;
+    box-shadow: 0 20px 60px rgba(5, 150, 105, 0.2);
+    animation: check-pop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .frame-7 .delivered-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 88px;
+    color: #9F1239;
+    text-align: center;
+    animation: fade-in-up 0.8s ease-out 0.4s both;
+  }
+
+  .frame-7 .sub-text {
+    font-size: 32px;
+    color: #BE123C;
+    opacity: 0.5;
+    text-align: center;
+    line-height: 1.6;
+    max-width: 600px;
+    animation: fade-in-up 0.8s ease-out 0.7s both;
+  }
+
+  .frame-7 .hearts-bottom {
+    position: absolute;
+    bottom: 100px;
+    display: flex;
+    gap: 30px;
+  }
+
+  .frame-7 .hearts-bottom span {
+    font-size: 60px;
+    animation: heart-float 2s ease-in-out infinite;
+  }
+
+  .frame-7 .hearts-bottom span:nth-child(2) { animation-delay: 0.4s; }
+  .frame-7 .hearts-bottom span:nth-child(3) { animation-delay: 0.8s; }
+
+  /* ===========================
+     FRAME 8: TECH STACK
+     =========================== */
+  .frame-8 {
+    background: linear-gradient(165deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  }
+
+  .frame-8 .content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 120px 80px;
+    gap: 70px;
+  }
+
+  .frame-8 .title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 64px;
+    color: #fff;
+    text-align: center;
+    opacity: 0.9;
+  }
+
+  .frame-8 .stack-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+  }
+
+  .frame-8 .stack-item {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .frame-8 .stack-item .stack-icon { font-size: 52px; }
+
+  .frame-8 .stack-item .stack-name {
+    font-weight: 700;
+    font-size: 26px;
+    color: #fff;
+  }
+
+  .frame-8 .stack-item .stack-role {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .frame-8 .stack-item.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .frame-8 .built-with {
+    position: absolute;
+    bottom: 120px;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.3);
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  .frame-8 .built-with span {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 600;
+  }
+
+  /* ===========================
+     FULL REEL (single animated page)
+     =========================== */
+  .reel-link {
+    color: #3B82F6;
+    font-size: 18px;
+    text-decoration: underline;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<!-- FRAME 1: Title -->
+<p class="label">Frame 1 — Title</p>
+<div class="frame frame-1">
+  <div class="hearts-bg">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div>
+  <div class="content">
+    <div class="icon-cluster">💌</div>
+    <h1 class="title">Voice<br>Letters</h1>
+    <p class="subtitle">Hide voice messages around your home for your valentine to discover</p>
+    <div class="tech-badge">
+      <span>Raspberry Pi</span>
+      <span>IR Sensors</span>
+      <span>React</span>
+    </div>
+  </div>
+</div>
+
+<!-- FRAME 2: Pick a Room -->
+<p class="label">Frame 2 — Pick a Room</p>
+<div class="frame frame-2">
+  <div class="step-num">01</div>
+  <div class="step-label">Step One</div>
+  <div class="phone-mockup">
+    <div class="notch"></div>
+    <div class="app-header">
+      <h3>♥ Voice Letters ♥</h3>
+      <p>Tap a room to send a voice letter</p>
+    </div>
+    <div class="floor-plan">
+      <div class="room room-bedroom"><span class="room-icon">♥</span>Bedroom</div>
+      <div class="room room-office"><span class="room-icon">♥</span>Office</div>
+      <div class="room room-bathroom"><span class="room-icon">♥</span>Bathroom</div>
+      <div class="room room-living"><span class="room-icon">👆</span>Living Room</div>
+    </div>
+  </div>
+  <div class="tap-indicator"></div>
+  <div class="action-text">
+    <h2>Pick a room</h2>
+    <p>Tap any room on the floor plan</p>
+  </div>
+</div>
+
+<!-- FRAME 3: Record -->
+<p class="label">Frame 3 — Record</p>
+<div class="frame frame-3">
+  <div class="step-num">02</div>
+  <div class="step-label">Step Two</div>
+  <div class="mic-area">
+    <div class="mic-rings">
+      <div class="mic-ring"></div>
+      <div class="mic-ring"></div>
+      <div class="mic-ring"></div>
+      <div class="mic-btn">🎙️</div>
+    </div>
+    <div class="waveform">
+      <div class="bar" style="height:20px; animation-delay:0.00s"></div>
+      <div class="bar" style="height:45px; animation-delay:0.05s"></div>
+      <div class="bar" style="height:30px; animation-delay:0.10s"></div>
+      <div class="bar" style="height:65px; animation-delay:0.15s"></div>
+      <div class="bar" style="height:40px; animation-delay:0.20s"></div>
+      <div class="bar" style="height:75px; animation-delay:0.25s"></div>
+      <div class="bar" style="height:50px; animation-delay:0.30s"></div>
+      <div class="bar" style="height:35px; animation-delay:0.35s"></div>
+      <div class="bar" style="height:60px; animation-delay:0.40s"></div>
+      <div class="bar" style="height:25px; animation-delay:0.45s"></div>
+      <div class="bar" style="height:55px; animation-delay:0.50s"></div>
+      <div class="bar" style="height:70px; animation-delay:0.55s"></div>
+      <div class="bar" style="height:45px; animation-delay:0.60s"></div>
+      <div class="bar" style="height:30px; animation-delay:0.65s"></div>
+      <div class="bar" style="height:50px; animation-delay:0.70s"></div>
+      <div class="bar" style="height:20px; animation-delay:0.75s"></div>
+      <div class="bar" style="height:40px; animation-delay:0.80s"></div>
+      <div class="bar" style="height:65px; animation-delay:0.85s"></div>
+      <div class="bar" style="height:35px; animation-delay:0.90s"></div>
+      <div class="bar" style="height:55px; animation-delay:0.95s"></div>
+    </div>
+  </div>
+  <div class="action-text">
+    <h2>Record a letter</h2>
+    <p>Speak your message from the heart</p>
+  </div>
+</div>
+
+<!-- FRAME 4: Sent to Cloud -->
+<p class="label">Frame 4 — Sent to Cloud</p>
+<div class="frame frame-4">
+  <div class="step-num">03</div>
+  <div class="step-label">Step Three</div>
+  <div class="cloud-area">
+    <div class="envelope">💌</div>
+    <div class="flow-path">
+      <svg width="4" height="120">
+        <line x1="2" y1="0" x2="2" y2="120" />
+      </svg>
+    </div>
+    <div class="cloud-box">
+      <span class="cloud-emoji">☁️</span>
+      <span class="cloud-label">SUPABASE</span>
+      <span class="cloud-sub">Audio storage</span>
+    </div>
+  </div>
+  <div class="action-text">
+    <h2>Sent to the cloud</h2>
+    <p>Stored securely, ready for pickup</p>
+  </div>
+</div>
+
+<!-- FRAME 5: Sensor Detects -->
+<p class="label">Frame 5 — Sensor Detects</p>
+<div class="frame frame-5">
+  <div class="step-num">04</div>
+  <div class="step-label">Step Four</div>
+  <div class="detect-area">
+    <div class="scene">
+      <span class="person-icon">🚶</span>
+      <div class="ir-ring"></div>
+      <div class="ir-ring"></div>
+      <div class="ir-ring"></div>
+    </div>
+    <div class="sensor-box">
+      <span class="chip-icon">📡</span>
+      <div class="sensor-info">
+        <span class="sensor-name">IR Presence Sensor</span>
+        <span class="sensor-desc">Detects body heat via I2C</span>
+      </div>
+    </div>
+  </div>
+  <div class="action-text">
+    <h2>They walk in</h2>
+    <p>A hidden sensor detects their presence</p>
+  </div>
+</div>
+
+<!-- FRAME 6: Speaker Plays -->
+<p class="label">Frame 6 — Speaker Plays</p>
+<div class="frame frame-6">
+  <div class="step-num">05</div>
+  <div class="step-label">Step Five</div>
+  <div class="play-area">
+    <div class="speaker-scene">
+      <span class="speaker-icon">🔊</span>
+      <div class="sound-arcs">
+        <div class="sound-arc"></div>
+        <div class="sound-arc"></div>
+        <div class="sound-arc"></div>
+      </div>
+    </div>
+    <div class="message-bubble">
+      <p class="msg-text">"Hey love, I left you<br>a little surprise..."</p>
+    </div>
+  </div>
+  <div class="action-text">
+    <h2>Your voice plays</h2>
+    <p>Automatically, through a hidden speaker</p>
+  </div>
+</div>
+
+<!-- FRAME 7: Delivered -->
+<p class="label">Frame 7 — Delivered</p>
+<div class="frame frame-7">
+  <div class="content">
+    <div class="check-circle">✓</div>
+    <h1 class="delivered-text">Letter<br>Delivered</h1>
+    <p class="sub-text">You get a notification that your valentine heard your message</p>
+  </div>
+  <div class="hearts-bottom">
+    <span>💕</span>
+    <span>💕</span>
+    <span>💕</span>
+  </div>
+</div>
+
+<!-- FRAME 8: Tech Stack -->
+<p class="label">Frame 8 — Tech Stack (optional)</p>
+<div class="frame frame-8">
+  <div class="content">
+    <h2 class="title">How it's built</h2>
+    <div class="stack-grid">
+      <div class="stack-item">
+        <span class="stack-icon">🍓</span>
+        <span class="stack-name">Raspberry Pi</span>
+        <span class="stack-role">One hidden in each room</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-icon">📡</span>
+        <span class="stack-name">STHS34PF80</span>
+        <span class="stack-role">IR presence sensor</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-icon">⚛️</span>
+        <span class="stack-name">React</span>
+        <span class="stack-role">Floor plan web app</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-icon">⚡</span>
+        <span class="stack-name">Supabase</span>
+        <span class="stack-role">Audio storage + status</span>
+      </div>
+      <div class="stack-item full-width">
+        <span class="stack-icon">🤖</span>
+        <span class="stack-name">Claude Code</span>
+        <span class="stack-role">AI pair programmer</span>
+      </div>
+    </div>
+  </div>
+  <div class="built-with">
+    Built in a weekend with <span>Claude Code</span><br>
+    and <span>Wispr Flow</span>
+  </div>
+</div>
+
+</body>
+</html>

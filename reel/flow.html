@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voice Letters — Flow</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .frame {
+    width: 1080px;
+    height: 1920px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(170deg, #FFF8F8 0%, #FFE8EE 35%, #FFD6E0 65%, #FFC8D6 100%);
+  }
+
+  /* Subtle hearts background */
+  .hearts-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    font-size: 70px;
+    line-height: 1.15;
+    word-break: break-all;
+    padding: 10px;
+    color: #BE123C;
+    pointer-events: none;
+  }
+
+  /* Title */
+  .title-area {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .title-area h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 76px;
+    color: #9F1239;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .title-area p {
+    font-size: 28px;
+    color: #BE123C;
+    opacity: 0.5;
+    margin-top: 10px;
+  }
+
+  /* Flow container */
+  .flow {
+    position: absolute;
+    top: 280px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Each step node */
+  .node {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    position: relative;
+  }
+
+  .node-icon {
+    width: 120px;
+    height: 120px;
+    border-radius: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    flex-shrink: 0;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  }
+
+  .node-text h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38px;
+    line-height: 1.2;
+  }
+
+  .node-text p {
+    font-size: 24px;
+    opacity: 0.5;
+    margin-top: 4px;
+  }
+
+  /* Color themes per step */
+  .node-record .node-icon { background: #FFF; }
+  .node-record .node-text h3 { color: #9F1239; }
+  .node-record .node-text p { color: #BE123C; }
+
+  .node-cloud .node-icon { background: #FFF; }
+  .node-cloud .node-text h3 { color: #1E40AF; }
+  .node-cloud .node-text p { color: #3B82F6; }
+
+  .node-detect .node-icon { background: #FFF; }
+  .node-detect .node-text h3 { color: #065F46; }
+  .node-detect .node-text p { color: #059669; }
+
+  .node-play .node-icon { background: #FFF; }
+  .node-play .node-text h3 { color: #9A3412; }
+  .node-play .node-text p { color: #EA580C; }
+
+  .node-delivered .node-icon { background: linear-gradient(135deg, #D1FAE5, #A7F3D0); }
+  .node-delivered .node-text h3 { color: #9F1239; }
+  .node-delivered .node-text p { color: #BE123C; }
+
+  /* Animated connector arrows */
+  .connector {
+    width: 4px;
+    height: 140px;
+    position: relative;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .connector svg {
+    overflow: visible;
+  }
+
+  .connector line {
+    stroke-dasharray: 12 8;
+    stroke-linecap: round;
+  }
+
+  /* Each connector gets a staggered animation delay */
+  @keyframes dash-down {
+    to { stroke-dashoffset: -20; }
+  }
+
+  .connector-1 line {
+    stroke: #BE123C;
+    stroke-width: 3;
+    animation: dash-down 0.7s linear infinite;
+  }
+
+  .connector-2 line {
+    stroke: #3B82F6;
+    stroke-width: 3;
+    animation: dash-down 0.7s linear infinite;
+  }
+
+  .connector-3 line {
+    stroke: #059669;
+    stroke-width: 3;
+    animation: dash-down 0.7s linear infinite;
+  }
+
+  .connector-4 line {
+    stroke: #EA580C;
+    stroke-width: 3;
+    animation: dash-down 0.7s linear infinite;
+  }
+
+  /* Small arrow head at bottom of each connector */
+  .connector .arrow-head {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+  }
+
+  .connector-1 .arrow-head { border-top: 10px solid #BE123C; }
+  .connector-2 .arrow-head { border-top: 10px solid #3B82F6; }
+  .connector-3 .arrow-head { border-top: 10px solid #059669; }
+  .connector-4 .arrow-head { border-top: 10px solid #EA580C; }
+
+  /* Animated dot traveling along connector */
+  @keyframes travel-dot {
+    0% { top: 0; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 130px; opacity: 0; }
+  }
+
+  .connector .travel-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: travel-dot 1.8s ease-in-out infinite;
+  }
+
+  .connector-1 .travel-dot { background: #E11D48; animation-delay: 0s; }
+  .connector-2 .travel-dot { background: #3B82F6; animation-delay: 1.8s; }
+  .connector-3 .travel-dot { background: #10B981; animation-delay: 3.6s; }
+  .connector-4 .travel-dot { background: #F97316; animation-delay: 5.4s; }
+
+  /* Pulse on active node */
+  @keyframes node-pulse {
+    0%, 100% { box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+    50% { box-shadow: 0 8px 40px rgba(0,0,0,0.12); }
+  }
+
+  .node-icon {
+    animation: node-pulse 3s ease-in-out infinite;
+  }
+
+  /* Bottom area */
+  .bottom-area {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .tech-pills {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    padding: 0 60px;
+  }
+
+  .tech-pills span {
+    background: rgba(159, 18, 57, 0.07);
+    color: #9F1239;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  .built-with {
+    font-size: 22px;
+    color: #BE123C;
+    opacity: 0.35;
+  }
+
+  .built-with strong {
+    opacity: 1;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <div class="hearts-bg">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div>
+
+  <!-- Title -->
+  <div class="title-area">
+    <h1>💌 Voice Letters</h1>
+    <p>Hide voice messages for your valentine to find</p>
+  </div>
+
+  <!-- Flow -->
+  <div class="flow">
+
+    <!-- 1. Record -->
+    <div class="node node-record">
+      <div class="node-icon">📱</div>
+      <div class="node-text">
+        <h3>Record a letter</h3>
+        <p>Tap a room, speak from the heart</p>
+      </div>
+    </div>
+
+    <!-- Arrow 1 -->
+    <div class="connector connector-1">
+      <svg width="4" height="140"><line x1="2" y1="0" x2="2" y2="134" /></svg>
+      <div class="arrow-head"></div>
+      <div class="travel-dot"></div>
+    </div>
+
+    <!-- 2. Cloud -->
+    <div class="node node-cloud">
+      <div class="node-icon">☁️</div>
+      <div class="node-text">
+        <h3>Stored in the cloud</h3>
+        <p>Supabase, waiting for pickup</p>
+      </div>
+    </div>
+
+    <!-- Arrow 2 -->
+    <div class="connector connector-2">
+      <svg width="4" height="140"><line x1="2" y1="0" x2="2" y2="134" /></svg>
+      <div class="arrow-head"></div>
+      <div class="travel-dot"></div>
+    </div>
+
+    <!-- 3. Detect -->
+    <div class="node node-detect">
+      <div class="node-icon">📡</div>
+      <div class="node-text">
+        <h3>They walk in</h3>
+        <p>IR sensor detects their presence</p>
+      </div>
+    </div>
+
+    <!-- Arrow 3 -->
+    <div class="connector connector-3">
+      <svg width="4" height="140"><line x1="2" y1="0" x2="2" y2="134" /></svg>
+      <div class="arrow-head"></div>
+      <div class="travel-dot"></div>
+    </div>
+
+    <!-- 4. Play -->
+    <div class="node node-play">
+      <div class="node-icon">🔊</div>
+      <div class="node-text">
+        <h3>Your voice plays</h3>
+        <p>Hidden speaker, automatic</p>
+      </div>
+    </div>
+
+    <!-- Arrow 4 -->
+    <div class="connector connector-4">
+      <svg width="4" height="140"><line x1="2" y1="0" x2="2" y2="134" /></svg>
+      <div class="arrow-head"></div>
+      <div class="travel-dot"></div>
+    </div>
+
+    <!-- 5. Delivered -->
+    <div class="node node-delivered">
+      <div class="node-icon">✓</div>
+      <div class="node-text">
+        <h3>Letter delivered</h3>
+        <p>You get notified on the app</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="bottom-area">
+    <div class="tech-pills">
+      <span>Raspberry Pi</span>
+      <span>React</span>
+      <span>Supabase</span>
+      <span>Python</span>
+    </div>
+    <p class="built-with">Built in a day with <strong>Claude Code</strong> + <strong>Wispr Flow</strong></p>
+  </div>
+</div>
+
+</body>
+</html>

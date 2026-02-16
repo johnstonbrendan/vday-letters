@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #fdf6f0;
+  --color-blush: #f8e8e0;
+  --color-rose: #e8a0a0;
+  --color-rose-dark: #d4787a;
+  --color-rose-deep: #c45e60;
+  --color-lavender: #d4c5e2;
+  --color-mint: #c5ddd4;
+  --color-sky: #c5d5e8;
+  --color-peach: #f0d0b8;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-cream);
+  font-family: var(--font-sans);
+}
